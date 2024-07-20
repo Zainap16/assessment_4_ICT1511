@@ -47,14 +47,14 @@ class Library:
         
     def addBook(self, book):
         self.books.append(book)
-        return f"The book '{book.title}' has been added to library"
+        return f"The book '{book.getTitle()}' has been added to library"
     
     def removeBook(self, ISBN):
         for book in self.books:
             if book.getISBN() == ISBN:
                 self.books.remove(book)
                 return f"the book '{book.title}' has been removed from our library"
-            return "Book not found"
+        return "Book not found"
     
     
     def displayAvailableBooks(self):
@@ -132,7 +132,8 @@ class Library:
         
         newBook = Book(title, author, ISBN, genre, available)
         self.addBook(newBook)
-        return f"'{title}, '{author}, '{ISBN}', '{genre}', '{available}' --> has been added to Library"
+        
+        return f"'{title}' by '{author}' (ISBN: '{ISBN}', Genre: '{genre}', Available: {available}) has been added to the library."
     
     def loanBook(self, ISBN):
         for book in self.books:
@@ -141,7 +142,7 @@ class Library:
                     book.setAvailability(False)
                     return f"'{book.getTitle()}' is now loaned out by you"
                 else:
-                    return f"'{book.getTitle()}' is currentlt unavaiable"
+                    return f"'{book.getTitle()}' is currently unavailable"
                 
         return "Book not found"
     
@@ -152,7 +153,7 @@ class Library:
                     book.setAvailability(True)
                     return f"'{book.getTitle()}' is now returned back into library"
                 else:
-                    return f"'{book.getTitle()}' not loanded out"
+                    return f"'{book.getTitle()}' not loanded out/ is available"
         return "Book not found"
                 
         
@@ -187,6 +188,8 @@ while isTrue:
         ISBN = input("enter ISBN: ")
         genre = input("enter genre: ")
         available = input("enter available: ")
+        
+        print(library.addBookFromStaffMember(title, author, ISBN, genre, available))
     
     
     if option.lower() == "remove":
@@ -211,15 +214,6 @@ while isTrue:
     
     if option.lower() == "q":
         isTrue = False
-
-        
-
-    
-
-    
-    # if option != "":
-    #     isTrue = False
-
 
 
 
