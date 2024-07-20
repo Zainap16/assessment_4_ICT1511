@@ -39,19 +39,8 @@ class Book:
     
     def setAvailability(self, available):
         self.available = available  
-        
-      
-book1 = Book("1984", "George Orwell", "1234567890", "Dystopian")
-book2 = Book("The Catcher in the Rye", "J.D. Salinger", "6677889900", "Classic", False)
 
-# print(book1.title)
-# print(book1.getTitle())
-
-# print("This is where the chnage occurs")
-# book1.setTitle("This is a new title")
-# print(book1.title)
-# print(book1.getTitle())
-
+# Library class
 class Library:
     def __init__(self):
         self.books = []
@@ -64,31 +53,172 @@ class Library:
         for book in self.books:
             if book.getISBN() == ISBN:
                 self.books.remove(book)
-                return f"the book 'book.title' has been removed from our library"
+                return f"the book '{book.title}' has been removed from our library"
             return "Book not found"
     
-    # def displayAvailableBooks(self):
-    #     for book in self.books:
-    #         if book.isAvailable() == False:
-    #             return "No books currently is available"
-    #         return f" Title: '{book.getTitle()}', Author: " #fill in entire sequence
-    def display_available_books(self):
-        available_books = [book for book in self.books if book.isAvailable()]
+    
+    def displayAvailableBooks(self):
+        available_books = []
+        for book in self.books:
+            if book.isAvailable():
+                available_books.append(book)
+        
         if not available_books:
             return "No books are currently available."
-        return "\n".join([f"Title: {book.getTitle()}, Author: {book.getAuthor()}, ISBN: {book.getISBN()}, Genre: {book.getGenre()}" for book in available_books])
+        
+        book_details = []
+        for book in available_books:
+            details = (
+                f"Title: {book.getTitle()}, "
+                f"Author: {book.getAuthor()}, "
+                f"ISBN: {book.getISBN()}, "
+                f"Genre: {book.getGenre()}"
+            )
+            book_details.append(details)
+        
+        return "\n".join(book_details)
 
     
-    def searchByTitle(self, title):
-        pass
+    def searchBookByTitle(self, title):
+        foundBooks = []
+        for book in self.books:
+            if book.getTitle().lower() == title.lower():
+                foundBooks.append(book)
         
+        if not foundBooks:
+            return "No book found!"
         
+        result = []
+        for book in foundBooks:
+            result_book = f"Title: {book.getTitle()}, Author: {book.getAuthor()}, ISBN: {book.getISBN()}, Genre: {book.getGenre()}"
+            result.append(result_book)
+        
+        return "\n".join(result)
+    
+    def searchBookByAuthor(self, author):
+        foundBooks = []
+        for book in self.books:
+            if book.getAuthor().lower() == author.lower():
+                foundBooks.append(book)
+        
+        if not foundBooks:
+            return "No book found!"
+        
+        result = []
+        for book in foundBooks:
+            result_book = f"Title: {book.getTitle()}, Author: {book.getAuthor()}, ISBN: {book.getISBN()}, Genre: {book.getGenre()}"
+            result.append(result_book)
+        
+        return "\n".join(result)
+    
+    def searchBookByGenre(self, genre):
+        foundBooks = []
+        for book in self.books:
+            if book.getGenre().lower() == genre.lower():
+                foundBooks.append(book)
+        
+        if not foundBooks:
+            return "No book found!"
+        
+        result = []
+        for book in foundBooks:
+            result_book = f"Title: {book.getTitle()}, Author: {book.getAuthor()}, ISBN: {book.getISBN()}, Genre: {book.getGenre()}"
+            result.append(result_book)
+        
+        return "\n".join(result)
+    
+    def addBookFromStaffMember(self, title, author, ISBN, genre, available = True):
+
+        
+        newBook = Book(title, author, ISBN, genre, available)
+        self.addBook(newBook)
+        return f"'{title}, '{author}, '{ISBN}', '{genre}', '{available}' --> has been added to Library"
+    
+    def loanBook(self, ISBN):
+        for book in self.books:
+            if book.getISBN() == ISBN:
+                if book.isAvailable():
+                    book.setAvailability(False)
+                    return f"'{book.getTitle()}' is now loaned out by you"
+                else:
+                    return f"'{book.getTitle()}' is currentlt unavaiable"
+                
+        return "Book not found"
+    
+    def returnBook(self, ISBN):
+        for book in self.books:
+            if book.getISBN() == ISBN:
+                if not book.isAvailable():
+                    book.setAvailability(True)
+                    return f"'{book.getTitle()}' is now returned back into library"
+                else:
+                    return f"'{book.getTitle()}' not loanded out"
+        return "Book not found"
                 
         
+
+# dummy data
+
+book1 = Book("1984", "George Orwell", "1234567890", "Dystopian",False)
+book2 = Book("The Catcher in the Rye", "J.D. Salinger", "6677889900", "Classic")      
+                
 library = Library()
 
-library.addBook(book1.getAuthor())
-library.addBook(book2.getAuthor())
+library.addBook(book1)
+library.addBook(book2)
+
+# print(library.returnBook("1234567890"))
+# print(library.loanBook("6677889900"))
+# print(library.displayAvailableBooks())
+# print(library.searchBookByTitle("The Catcher in the Rye"))
+# print(library.searchBookByAuthor("George Orwell"))
+# print(library.searchBookByGenre("Classic"))
+
+isTrue = True
+
+while isTrue:
+    print("Welcome staff member. Do you wish to add new books(add), remove books(remove), display avaible books(status), search books(search), process book loans(loan) and returns(return) /n Press q to quit")
+    
+    option = input("Which is your option: ")
+        
+    if option.lower() == "add":
+        title = input("enter title: ")
+        author = input("enter author: ")
+        ISBN = input("enter ISBN: ")
+        genre = input("enter genre: ")
+        available = input("enter available: ")
+    
+    
+    if option.lower() == "remove":
+        ISBN = input("enter ISBN: ")
+        print(library.removeBook(ISBN))
+        print(library.addBookFromStaffMember(title, author, ISBN, genre, str(available)))
+        
+    if option.lower() == "status":
+        print(library.displayAvailableBooks())
+        
+    if option.lower() == "search":
+        title = input("enter title of book: ")
+        print(library.searchBookByTitle(title))
+        
+    if option.lower() == "loan":
+        ISBN = input("enter ISBN: ")
+        print(library.loanBook(ISBN))
+        
+    if option.lower() == "return":
+        ISBN = input("enter ISBN: ")
+        print(library.returnBook(ISBN))
+    
+    if option.lower() == "q":
+        isTrue = False
+
+        
+
+    
+
+    
+    # if option != "":
+    #     isTrue = False
 
 
 
