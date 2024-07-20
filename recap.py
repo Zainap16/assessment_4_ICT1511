@@ -1,10 +1,13 @@
 
-drinks = ["coffee","water","switch"]
-dinner = ["pizza","kfc_burger"]
-dessert = ["eclair","cho_cake"]
+# drinks = ["coffee","water","switch"]
+# dinner = ["pizza","kfc_burger"]
+# dessert = ["eclair","cho_cake"]
 
-food = [drinks, dinner, dessert]
+# food = [drinks, dinner, dessert]
 
-for i in food:
+# for i in food:
+#     print(i)
     
 
+class Car:
+    pass
